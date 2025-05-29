@@ -363,6 +363,10 @@ other options are ignored.
 				}
 				config.IntelRdt = &configs.IntelRdt{}
 				intelRdtManager := intelrdt.NewManager(&config, container.ID(), state.IntelRdtPath)
+				if intelRdtManager == nil {
+					logrus.Errorf("Intel RDT is not available: resctrl filesystem not found or unsupported")
+					return nil
+				}
 				if err := intelRdtManager.Apply(state.InitProcessPid); err != nil {
 					return err
 				}
